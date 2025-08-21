@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>登録完了</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body class="container">
+
+  <header>
+    <h1 class="page-title" th:text="${message}">登録が完了しました！</h1>
+  </header>
+
+  <div class="form-actions">
+    <a th:href="@{/'"} class="btn btn-primary">トップページへ戻る</a>
+    <a th:href="@{/login}" class="btn btn-secondary">ログインページへ</a>
+  </div>
+
+</body>
+</html>

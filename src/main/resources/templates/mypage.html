@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>マイページ</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body class="container">
+
+  <header>
+    <h1 class="page-title">マイページ</h1>
+  </header>
+
+  <!-- 🔹 メッセージ表示（プロフィール更新後など） -->
+  <p th:if="${message}" th:text="${message}" class="message success"></p>
+
+  <!-- 🔹 ユーザー情報 -->
+  <div class="user-info">
+    <p><strong>メール:</strong> <span th:text="${user.email}"></span></p>
+    <p><strong>名前:</strong> <span th:text="${user.name}"></span></p>
+    <p><strong>プロフィール:</strong> <span th:text="${user.profile}"></span></p>
+  </div>
+
+  <!-- 🔹 ナビゲーション -->
+  <nav class="nav-links">
+    <a th:href="@{/profile/edit}" class="btn btn-primary">プロフィール編集</a>
+    <a th:href="@{/posts}" class="btn btn-secondary">投稿一覧</a>
+    <a th:href="@{/}" class="btn btn-link">トップへ戻る</a>
+    <a th:href="@{/logout}" class="btn btn-danger">ログアウト</a>
+  </nav>
+
+</body>
+</html>

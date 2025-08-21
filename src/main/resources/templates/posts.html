@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>投稿一覧</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <style>
+    .pagination {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+      gap: 10px;
+    }
+
+    .pagination a {
+      padding: 8px 12px;
+      background-color: #007bff;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+
+    .pagination a.current {
+      background-color: #0056b3;
+    }
+
+    .pagination a:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body class="container">
+
+  <header>
+    <h1 class="page-title">投稿一覧</h1>
+  </header>
+
+  <!-- 投稿フォーム -->
+  <section class="form-box">
+    <form th:action="@{/posts}" method="post">
+      <div class="form-group">
+        <textarea name="content" class="input-field" placeholder="投稿内容を入力してください" rows="4"></textarea>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">投稿する</button>
+      </div>
+    </form>
+  </section>
+
+  <hr>
+
+  <!-- 投稿一覧 -->
+  <section class="post-list">
+    <div th:each="post : ${posts}" class="post-item">
+      <p><strong th:text="${post.user.name}">ユーザー</strong> さんの投稿</p>
+      <p th:text="${post.content}" class="post-content">投稿内容</p>
+      <p class="post-meta">
+        <small th:text="${#temporals.format(post.createdAt, 'yyyy/MM/dd HH:mm')}">投稿日時</small>
+      </p>
+
+      <!-- 編集・削除ボタン -->
+      <div class="post-actions"
+           th:if="${session.loginUser != null and post.user != null and session.loginUser.id == post.user.id}">
+        <form th:action="@{/posts/delete}" method="post" class="inline-form">
+          <input type="hidden" name="id" th:value="${post.id}">
+          <button type="submit" class="btn btn-danger">削除</button>
+        </form>
+        <a th:href="@{/posts/edit/{id}(id=${post.id})}" class="btn btn-secondary">編集</a>
+      </div>
+
+      <hr>
+    </div>
+  </section>
+
+  <!-- ページネーション -->
+  <div class="pagination" th:if="${postPage.totalPages > 1}">
+    <a th:each="i : ${#numbers.sequence(0, postPage.totalPages - 1)}"
+       th:href="@{/posts(page=${i})}"
+       th:classappend="${i} == ${currentPage} ? 'current'">
+      <span th:text="${i + 1}">1</span>
+    </a>
+  </div>
+
+  <!-- ナビゲーション -->
+  <nav class="nav-links">
+    <a th:href="@{/mypage}" class="btn btn-link">マイページへ戻る</a>
+    <a th:href="@{/}" class="btn btn-link">トップへ戻る</a>
+  </nav>
+
+</body>
+</html>

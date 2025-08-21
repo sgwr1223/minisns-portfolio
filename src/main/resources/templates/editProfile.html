@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>プロフィール編集</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body class="container">
+
+  <header>
+    <h1 class="page-title">プロフィール編集</h1>
+  </header>
+
+  <!-- プロフィール編集フォーム -->
+  <form th:action="@{/profile/edit}" method="post">
+      <label for="email">メールアドレス:</label>
+      <input type="email" id="email" name="email" th:value="${user.email}" required><br>
+
+      <label for="password">パスワード:</label>
+      <input type="password" id="password" name="password" th:value="${user.password}" required><br>
+
+      <label for="name">名前:</label>
+      <input type="text" id="name" name="name" th:value="${user.name}" required><br>
+
+      <label for="profile">プロフィール:</label>
+      <textarea id="profile" name="profile" th:text="${user.profile}"></textarea><br>
+
+      <button type="submit">更新</button>
+  </form>
+
+
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>投稿編集</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body class="container">
+
+  <header>
+    <h1 class="page-title">投稿編集</h1>
+  </header>
+
+  <!-- 編集フォーム -->
+  <form th:action="@{/posts/update}" method="post" class="form-box">
+    <input type="hidden" name="id" th:value="${post.id}">
+
+    <div class="form-group">
+      <label for="content">内容:</label>
+      <textarea id="content" name="content" class="input-field" rows="5"
+                th:text="${post.content}"></textarea>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">更新する</button>
+      <a th:href="@{/posts}" class="btn btn-secondary">キャンセル</a>
+    </div>
+  </form>
+
+</body>
+</html>

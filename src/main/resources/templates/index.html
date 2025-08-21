@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>MiniSNS</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body class="container">
+
+  <header>
+    <h1 class="page-title" th:text="${message}">MiniSNSへようこそ！</h1>
+  </header>
+
+  <main class="button-area">
+    <!-- ログイン -->
+    <p>
+      <a th:href="@{/login}" class="btn btn-primary">ログイン</a>
+    </p>
+
+    <!-- 新規登録 -->
+    <p>
+      <a th:href="@{/register}" class="btn btn-success">新規登録</a>
+    </p>
+
+    <!-- 投稿一覧 -->
+    <p>
+      <a th:href="@{/posts}" class="btn btn-info">投稿一覧</a>
+    </p>
+
+    <!-- マイページ -->
+    <p>
+      <a th:href="@{/mypage}" class="btn btn-secondary">マイページ</a>
+    </p>
+
+    <!-- プロフィール編集 -->
+    <p>
+      <a th:href="@{/profile/edit}" class="btn btn-warning">プロフィール編集</a>
+    </p>
+
+    <!-- 退会 -->
+    <p>
+      <a th:href="@{/delete}" class="btn btn-danger">退会</a>
+    </p>
+  </main>
+
+</body>
+</html>
