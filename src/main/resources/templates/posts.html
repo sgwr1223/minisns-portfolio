@@ -11,7 +11,6 @@
       margin-top: 20px;
       gap: 10px;
     }
-
     .pagination a {
       padding: 8px 12px;
       background-color: #007bff;
@@ -19,13 +18,17 @@
       text-decoration: none;
       border-radius: 5px;
     }
+    .pagination a.current { background-color: #0056b3; }
+    .pagination a:hover { background-color: #0056b3; }
 
-    .pagination a.current {
-      background-color: #0056b3;
+    .search-box {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+      align-items: center;
     }
-
-    .pagination a:hover {
-      background-color: #0056b3;
+    .search-box input[type="text"] {
+      flex: 1;
     }
   </style>
 </head>
@@ -34,6 +37,14 @@
   <header>
     <h1 class="page-title">投稿一覧</h1>
   </header>
+
+  <!-- 🔍 検索フォーム -->
+  <form th:action="@{/posts}" method="get" class="search-box">
+    <input type="text" name="keyword" class="input-field" placeholder="キーワードで検索"
+           th:value="${keyword}">
+    <button type="submit" class="btn btn-secondary">検索</button>
+    <a th:href="@{/posts}" class="btn btn-link">クリア</a>
+  </form>
 
   <!-- 投稿フォーム -->
   <section class="form-box">
@@ -51,7 +62,9 @@
 
   <!-- 投稿一覧 -->
   <section class="post-list">
-    <div th:each="post : ${posts}" class="post-item">
+    <p th:if="${#lists.isEmpty(posts)}">該当する投稿はありません。</p>
+
+    <div th:each="post : ${posts}" class="post-item" th:unless="${#lists.isEmpty(posts)}">
       <p><strong th:text="${post.user.name}">ユーザー</strong> さんの投稿</p>
       <p th:text="${post.content}" class="post-content">投稿内容</p>
       <p class="post-meta">
@@ -72,10 +85,10 @@
     </div>
   </section>
 
-  <!-- ページネーション -->
+  <!-- ページネーション（キーワード維持！） -->
   <div class="pagination" th:if="${postPage.totalPages > 1}">
     <a th:each="i : ${#numbers.sequence(0, postPage.totalPages - 1)}"
-       th:href="@{/posts(page=${i})}"
+       th:href="@{/posts(page=${i}, keyword=${keyword})}"
        th:classappend="${i} == ${currentPage} ? 'current'">
       <span th:text="${i + 1}">1</span>
     </a>

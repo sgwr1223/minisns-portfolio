@@ -27,17 +27,24 @@ public class PostController {
     @Autowired
     private CommentRepository commentRepository;
 
-    // 投稿一覧表示（ページネーション対応）
+    // 投稿一覧表示（検索 & ページネーション対応）
     @GetMapping("/posts")
     public String showPosts(Model model,
-                            @RequestParam(defaultValue = "0") int page) {
-        Pageable pageable = PageRequest.of(page, 5); // 1ページ5件表示
-        Page<Post> postPage = postRepository.findAllByOrderByCreatedAtDesc(pageable);
+                            @RequestParam(defaultValue = "0") int page,
+                            @RequestParam(value = "keyword", required = false) String keyword) {
+        Pageable pageable = PageRequest.of(page, 5); // 1ページ5件
+        Page<Post> postPage;
+
+        if (keyword != null && !keyword.isBlank()) {
+            postPage = postRepository.findByContentContainingOrderByCreatedAtDesc(keyword, pageable);
+            model.addAttribute("keyword", keyword);
+        } else {
+            postPage = postRepository.findAllByOrderByCreatedAtDesc(pageable);
+        }
 
         model.addAttribute("postPage", postPage);
         model.addAttribute("posts", postPage.getContent());
         model.addAttribute("currentPage", page);
-
         return "posts";
     }
 
@@ -48,12 +55,10 @@ public class PostController {
         if (loginUser == null) {
             return "redirect:/login";
         }
-
         Post post = new Post();
         post.setContent(content);
         post.setUser(loginUser);
         postRepository.save(post);
-
         return "redirect:/posts";
     }
 
@@ -62,11 +67,9 @@ public class PostController {
     public String deletePost(@RequestParam Long id, HttpSession session) {
         User loginUser = (User) session.getAttribute("loginUser");
         Post post = postRepository.findById(id).orElse(null);
-
         if (post != null && post.getUser().getId().equals(loginUser.getId())) {
             postRepository.delete(post);
         }
-
         return "redirect:/posts";
     }
 
@@ -75,11 +78,9 @@ public class PostController {
     public String showEditPost(@PathVariable Long id, HttpSession session, Model model) {
         User loginUser = (User) session.getAttribute("loginUser");
         Post post = postRepository.findById(id).orElse(null);
-
         if (post == null || !post.getUser().getId().equals(loginUser.getId())) {
             return "redirect:/posts";
         }
-
         model.addAttribute("post", post);
         return "editPost";
     }
@@ -91,12 +92,10 @@ public class PostController {
                              HttpSession session) {
         User loginUser = (User) session.getAttribute("loginUser");
         Post post = postRepository.findById(id).orElse(null);
-
         if (post != null && post.getUser().getId().equals(loginUser.getId())) {
             post.setContent(content);
             postRepository.save(post);
         }
-
         return "redirect:/posts";
     }
 }
