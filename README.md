@@ -21,7 +21,17 @@ Spring Boot + MySQL + Thymeleaf で作成したミニSNSポートフォリオで
    ```bash
    git clone https://github.com/sgwr1223/minisns-portfolio.git
 
-2. DBを作成して application.properties に設定する
+2. DB
+（CREATE DATABASE minisns CHARACTER SET utf8mb4;）
+を作成して
+ application.properties
+（spring.datasource.url=jdbc:mysql://localhost:3306/minisns?useSSL=false&serverTimezone=Asia/Tokyo
+spring.datasource.username=YOUR_USER
+spring.datasource.password=YOUR_PASS
+
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+spring.mvc.hiddenmethod.filter.enabled=true） に設定する
 
 3. ./gradlew bootRun でアプリを起動
 
@@ -44,6 +54,7 @@ Spring Boot + MySQL + Thymeleaf で作成したミニSNSポートフォリオで
 ページ: GET /posts?page=0（0始まり）
 
 ## プロジェクト構成
+```
 src/
  └ main/
     ├ java/com/example/demo/
@@ -54,6 +65,7 @@ src/
     └ resources/
         ├ templates/ (index, login, register, posts, mypage, etc.)
         └ static/css/style.css
+```
 
 ## セキュリティ/注意点
 現状は学習用のため、パスワードは平文で保存しています。
